@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description"
+          content="App that makes scrabble game easier">
+    <title>Scrabble Help Kit - final words list</title>
+    <link rel="search" href="{% static 'Collins Scrabble Words(2019).txt' %}"/>
+</head>
+
+
+<body>
+    <div class="boxes">
+        <div class="box">
+            <span class="">
+                You can create: {{ sorted_common_words }}
+            </span>
+        </div>
+    </div>
+
+
+<!--    <script src="scrabble_set.js"></script>-->
+
+</body>
+</html>

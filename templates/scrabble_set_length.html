@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description"
+          content="App that makes scrabble game easier">
+    <title>Scrabble Help Kit - your scrabble set</title>
+</head>
+
+<body>
+    <div>
+        <p><b>Enter in here all the {{ scrabble_set_length.word_length }} letters.
+            In case of a blank tile enter "-" (a dash mark).</b></p>
+    </div>
+
+    <div class="boxes">
+        <div class="box">
+            <span class="">Your tiles are:.</span><br>
+        </div>
+    </div>
+
+    <div class="boxes">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ formset.management_form }}
+                {% for dict in formset.errors %}
+                    {% for error in dict.values %}
+                        <div class="form-error">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                    {% if formset.non_form_errors %}
+                        <div class="form-error">
+                            <strong>{{ formset.non_form_errors }}</strong>
+                        </div>
+                    {% endif %}
+                <br>
+
+                {% for form in formset %}
+                    <label>Enter the {{ forloop.counter }}. letter:</label>
+                    {{ form.tile }}<br><br>
+                {% endfor %}
+                <input class="button" type="submit" value="Submit">
+        </form>
+    </div><br>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="form-error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <div>
+        <p>You can make a correction coming back to the <a href="{% url 'letters_amount' %}">previous page</a>.</p>
+    </div>
+
+
+<!--    <script src="scrabble_set.js"></script>-->
+
+</body>
+</html>

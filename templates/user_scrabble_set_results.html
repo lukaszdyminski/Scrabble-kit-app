@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description"
+          content="App that makes scrabble game easier">
+    <title>Scrabble Help Kit - your scrabble set results</title>
+</head>
+
+<body>
+
+    <div class="boxes">
+        <div class="box">
+            <span class="">
+                Your scrabble set is:<br>
+                {% for result in user_scrabble_set %}
+                    {{ result.tile }}
+                {% endfor %}
+            </span>
+        </div>
+    </div>
+
+    <div class="boxes">
+        <div class="box">
+            <span class="">
+                <table>
+                    {% for tile in pre_letters_dict %}
+                        {% for key, value in tile.items %}
+                            <tr>
+                                <td>{{ key }} --- {{ value }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </table>
+            </span>
+        </div>
+    </div>
+
+    <div class="">
+        <form method="GET" action="{% url 'display_words_list' pk=set_length.pk %}">
+            {% csrf_token %}
+            <input class="button" type="submit" value="Search" name="permutation_tiles_set">
+        </form>
+    </div>
+
+<!--    <script src="scrabble_set.js"></script>-->
+
+</body>
+</html>

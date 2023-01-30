@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description"
+          content="App that makes scrabble game easier">
+    <title>Scrabble Help Kit</title>
+</head>
+
+<body>
+    <div>
+        <p><b>This is the Scrabble Help Kit. It is supposed to help you choose the best words to win scrabble game.</b><br><br>
+        The list below is the scrabble set. Every letter has its own amount of the tiles.<br><br>
+        For example letter "A" has 9 tiles in scrabble set. <br><br>There are 2 blank tiles at the end of list
+        (they are marked as "-"). <br><br>You are not allowed to exceed the tiles limit of the given letter.
+        </p>
+    </div>
+    <div class="boxes">
+        <div id="scrabble_set" class="box">
+            <table>
+                {% for tile in letters_dict %}
+                    {% for key, value in tile.all_tiles_set.items %}
+                        <tr>
+                            <td>{{ key }} --- {{ value }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="boxes">
+        <div class="box">
+             <span class=""><a href="{% url 'letters_amount' %}">Pick up the letters you need</a></span><br>
+        </div>
+    </div>
+
+<!--    <script src="scrabble_set.js"></script>-->
+
+</body>
+</html>
