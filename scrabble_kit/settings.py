@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'scrabble_kit_app',
+    'django_bootstrap5',
     'rest_framework',
 ]
 

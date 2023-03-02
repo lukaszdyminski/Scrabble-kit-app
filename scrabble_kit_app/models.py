@@ -22,5 +22,5 @@ validate_tile = RegexValidator(r'^[a-zA-Z-]*$', 'Only letters and special charac
 
 class ScrabbleSet(models.Model):
     tile = models.CharField(max_length=1, validators=[validate_tile])
-    tile_id = models.ForeignKey(ScrabbleWordLength, on_delete=models.CASCADE, null=True)
+    tile_id = models.ForeignKey(ScrabbleWordLength, on_delete=models.CASCADE, null=True, related_name='tiles_set')
 

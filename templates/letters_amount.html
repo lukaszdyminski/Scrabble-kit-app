@@ -1,46 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="description"
-          content="App that makes scrabble game easier">
-    <title>Scrabble Help Kit - letters amount</title>
-</head>
+{% extends "base.html" %}
 
-<body>
-    <div>
-        <p><b>Decide in here how many tiles you need to create a word (usually there are 7 tiles).</b></p>
+{% block title %}Scrabble Help Kit - Letters Amount{% endblock %}
+{% block content %}
+
+    <div class="container p-4 my-4 bg-dark text-white rounded">
+        <h5><b>Decide in here how many tiles you need to create a word:</b></h5>
     </div>
-    <div class="boxes">
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="container">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container mb-3 mt-3">
         <form method="post">
             {% csrf_token %}
             {% if letters_amount.errors %}
                 {% for field in letters_amount %}
                     {% for error in field.errors %}
-                        <div class="form-error">
+                        <div class="container p-3 my-2 bg-warning rounded">
                             <strong>{{ error|escape }}</strong>
                         </div>
                    {% endfor %}
                 {% endfor %}
                 {% for error in form.non_field_errors %}
-                    <div class="form-error">
+                    <div class="container p-3 my-2 bg-warning rounded">
                         <strong>{{ error|escape }}</strong>
                     </div>
                 {% endfor %}
             {% endif %}
             <br>
-            <label>Enter the tiles amount:</label>
-            <p>{{ letters_amount.word_length }}</p><br>
-            <input class="button" type="submit" value="Submit">
+            <label class="form-label">Enter the tiles amount:</label>
+                <p>{{ letters_amount.word_length }}</p><br>
+            <input class="btn btn-dark" type="submit" value="Submit">
         </form>
     </div>
 
-    {% if messages %}
-        {% for message in messages %}
-            <p class="form-error">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-
-
-</body>
-</html>
+{% endblock %}

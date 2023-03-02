@@ -1,49 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="description"
-          content="App that makes scrabble game easier">
-    <title>Scrabble Help Kit - your scrabble set results</title>
-</head>
+{% extends "base.html" %}
 
-<body>
 
-    <div class="boxes">
-        <div class="box">
-            <span class="">
-                Your scrabble set is:<br>
-                {% for result in user_scrabble_set %}
-                    {{ result.tile }}
-                {% endfor %}
-            </span>
-        </div>
+{% block title %}Scrabble Help Kit - Your Scrabble Set Results{% endblock %}
+{% block content %}
+
+    <div class="container p-4 my-4 bg-dark text-white rounded">
+        Your scrabble set is:
     </div>
 
-    <div class="boxes">
-        <div class="box">
-            <span class="">
-                <table>
-                    {% for tile in pre_letters_dict %}
-                        {% for key, value in tile.items %}
-                            <tr>
-                                <td>{{ key }} --- {{ value }}</td>
-                            </tr>
-                        {% endfor %}
+    <div class="container">
+        <h2>
+            {% for result in user_scrabble_set %}
+                <span class="badge bg-warning">{{ result.tile }}</span>
+            {% endfor %}
+        </h2>
+    </div>
+
+    <div class="container p-4 my-4 bg-dark text-white rounded">
+        The full scrabble set currently looks like below (the red tiles are the ones you have chosen):
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% for tile in pre_letters_dict %}
+                <div class="col-sm-4 col-sm-4 col-sm-4">
+                    {% for key, value in tile.items %}
+                        {% if key in user_scrabble_tiles %}
+                            <p class="h2 text-center"><span class="badge bg-danger">{{ key }}</span> --- {{ value }}</p>
+                        {% else %}
+                            <p class="h2 text-center"><span class="badge bg-warning">{{ key }}</span> --- {{ value }}</p>
+                        {% endif %}
                     {% endfor %}
-                </table>
-            </span>
+                </div>
+            {% endfor %}
         </div>
-    </div>
+    </div><br>
 
-    <div class="">
+    <div class="container">
         <form method="GET" action="{% url 'display_words_list' pk=set_length.pk %}">
             {% csrf_token %}
-            <input class="button" type="submit" value="Search" name="permutation_tiles_set">
+            <input class="h3 btn btn-dark" type="submit" value="Search the Words"
+                   name="permutation_tiles_set">
         </form>
+    </div><br>
+
+    <div class="container">
+        <p>You can make a correction coming back to the
+            <a class="btn btn-dark text-decoration-none text-white" href="{% url 'letters_amount' %}">
+                tiles amount page</a>.
+        </p>
     </div>
 
 <!--    <script src="scrabble_set.js"></script>-->
 
-</body>
-</html>
+{% endblock %}

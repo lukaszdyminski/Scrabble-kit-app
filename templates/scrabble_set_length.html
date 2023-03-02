@@ -1,37 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="description"
-          content="App that makes scrabble game easier">
-    <title>Scrabble Help Kit - your scrabble set</title>
-</head>
+{% extends "base.html" %}
 
-<body>
-    <div>
-        <p><b>Enter in here all the {{ scrabble_set_length.word_length }} letters.
-            In case of a blank tile enter "-" (a dash mark).</b></p>
+{% block title %}Scrabble Help Kit - Your Scrabble Set{% endblock %}
+{% block content %}
+
+    <div class="container p-4 my-4 bg-dark text-white rounded">
+        <h5><b>Enter in here all the {{ scrabble_set_length.word_length }} letters.
+            In case of a blank tile enter "-" (a dash mark).</b></h5>
+    </div><br>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="container">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container">
+        <h6><b>Your tiles are:</b></h6>
     </div>
 
-    <div class="boxes">
-        <div class="box">
-            <span class="">Your tiles are:.</span><br>
-        </div>
-    </div>
-
-    <div class="boxes">
+    <div class="container">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ formset.management_form }}
                 {% for dict in formset.errors %}
                     {% for error in dict.values %}
-                        <div class="form-error">
+                        <div class="container p-3 my-2 bg-warning rounded">
                             <strong>{{ error|escape }}</strong>
                         </div>
                     {% endfor %}
                 {% endfor %}
                     {% if formset.non_form_errors %}
-                        <div class="form-error">
+                        <div class="container p-3 my-2 bg-warning rounded">
                             <strong>{{ formset.non_form_errors }}</strong>
                         </div>
                     {% endif %}
@@ -41,22 +40,17 @@
                     <label>Enter the {{ forloop.counter }}. letter:</label>
                     {{ form.tile }}<br><br>
                 {% endfor %}
-                <input class="button" type="submit" value="Submit">
+                <input class="h3 btn btn-dark" type="submit" value="Submit">
         </form>
     </div><br>
 
-    {% if messages %}
-        {% for message in messages %}
-            <p class="form-error">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-
-    <div>
-        <p>You can make a correction coming back to the <a href="{% url 'letters_amount' %}">previous page</a>.</p>
+    <div class="container">
+        <p>You can make a correction coming back to the
+            <a class="h3 btn btn-dark text-decoration-none text-white" href="{% url 'letters_amount' %}">
+                previous page</a>.
+        </p>
     </div>
-
 
 <!--    <script src="scrabble_set.js"></script>-->
 
-</body>
-</html>
+{% endblock %}

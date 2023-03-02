@@ -62,7 +62,8 @@ def display_user_scrabble_set(request, pk):
                         return redirect('letters_amount')
     return render(request, 'user_scrabble_set_results.html', {'user_scrabble_set': user_scrabble_set,
                                                               'pre_letters_dict': pre_letters_dict,
-                                                              'set_length': set_length})
+                                                              'set_length': set_length,
+                                                              'user_scrabble_tiles': user_scrabble_tiles})
 
 
 def display_words_list(request, pk):
