@@ -30,27 +30,36 @@ def enter_letters_amount(request):
 
 def enter_user_scrabble_set(request, pk):
     scrabble_set_length = get_object_or_404(ScrabbleWordLength, pk=pk)
-    field_value = getattr(scrabble_set_length, 'word_length')
-    ScrabbleSetFormSet = inlineformset_factory(ScrabbleWordLength, ScrabbleSet, form=ScrabbleSetForm, extra=field_value)
+    user_field_value = getattr(scrabble_set_length, 'user_word_length')
+    board_field_value = getattr(scrabble_set_length, 'board_tiles')
+    ScrabbleSetFormSet = inlineformset_factory(ScrabbleWordLength, UserScrabbleSet, form=UserScrabbleSetForm,
+                                               extra=user_field_value)
+    ScrabbleBoardFormSet = inlineformset_factory(ScrabbleWordLength, BoardScrabbleSet, form=BoardScrabbleSetForm,
+                                                 extra=board_field_value)
     if request.method == 'POST':
-        formset = ScrabbleSetFormSet(request.POST or None)
-        if formset.is_valid():
-            for form in formset:
-                instance = form.save(commit=False)
-                instance.tile_id = scrabble_set_length
-                instance.save()
+        user_formset = ScrabbleSetFormSet(request.POST or None, instance=scrabble_set_length)
+        board_formset = ScrabbleBoardFormSet(request.POST or None, instance=scrabble_set_length)
+        if user_formset.is_valid() and board_formset.is_valid():
+            user_formset.save()
+            board_formset.save()
             return redirect('display_user_scrabble_set', pk=scrabble_set_length.pk)
+        else:
+            messages.error(request, 'The form contains errors!')
     else:
-        formset = ScrabbleSetFormSet(queryset=ScrabbleSet.objects.none())
+        user_formset = ScrabbleSetFormSet(queryset=UserScrabbleSet.objects.none())
+        board_formset = ScrabbleBoardFormSet(queryset=UserScrabbleSet.objects.none())
     return render(request, 'scrabble_set_length.html', {'scrabble_set_length': scrabble_set_length,
-                                                        'formset': formset})
+                                                        'user_formset': user_formset,
+                                                        'board_formset': board_formset
+                                                        })
 
 
 def display_user_scrabble_set(request, pk):
     set_length = get_object_or_404(ScrabbleWordLength, pk=pk)
-    user_scrabble_set = list(ScrabbleSet.objects.filter(tile_id=pk))
+    user_scrabble_tiles = UserScrabbleSet.objects.filter(user_tile_id=pk).values_list('user_tile', flat=True)
+    board_tiles = BoardScrabbleSet.objects.filter(board_tile_id=pk).values_list('board_tile', flat=True)
+    tiles_set = list(itertools.chain(user_scrabble_tiles, board_tiles))
     pre_letters_dict = ScrabbleTiles.objects.all().values_list('all_tiles_set', flat=True)
-    user_scrabble_tiles = ScrabbleSet.objects.filter(tile_id=pk).values_list('tile', flat=True)
     for user_letter in user_scrabble_tiles:
         for index in range(len(pre_letters_dict)):
             for letter in pre_letters_dict[index]:
@@ -60,10 +69,11 @@ def display_user_scrabble_set(request, pk):
                         messages.error(request, 'The "{}" letter scrabble set limit is exceeded.'
                                                 'Using original scrabble set for sure? Try again!'.format(user_letter))
                         return redirect('letters_amount')
-    return render(request, 'user_scrabble_set_results.html', {'user_scrabble_set': user_scrabble_set,
+    return render(request, 'user_scrabble_set_results.html', {'user_scrabble_tiles': user_scrabble_tiles,
+                                                              'tiles_set': tiles_set,
                                                               'pre_letters_dict': pre_letters_dict,
-                                                              'set_length': set_length,
-                                                              'user_scrabble_tiles': user_scrabble_tiles})
+                                                              'set_length': set_length
+                                                              })
 
 
 def display_words_list(request, pk):
@@ -72,7 +82,9 @@ def display_words_list(request, pk):
         let = chr(i)
         letters.append(let)
     all_permuted_words_list = []
-    permutation_tiles_set = ScrabbleSet.objects.filter(tile_id=pk).values_list('tile', flat=True)
+    permutation_user_tiles_set = UserScrabbleSet.objects.filter(user_tile_id=pk).values_list('user_tile', flat=True)
+    permutation_board_tiles_set = BoardScrabbleSet.objects.filter(board_tile_id=pk).values_list('board_tile', flat=True)
+    permutation_tiles_set = list(itertools.chain(permutation_user_tiles_set, permutation_board_tiles_set))
     tile_set_length = len(permutation_tiles_set)
     if request.method == 'GET':
         if '-' in permutation_tiles_set:

@@ -31,8 +31,10 @@
                 {% endfor %}
             {% endif %}
             <br>
-            <label class="form-label">Enter the tiles amount:</label>
-                <p>{{ letters_amount.word_length }}</p><br>
+            <label class="form-label">Enter your tiles set amount:</label>
+                <p>{{ letters_amount.user_word_length }}</p><br>
+            <label class="form-label">Enter board tiles amount:</label>
+                <p>{{ letters_amount.board_tiles }}</p><br>
             <input class="btn btn-dark" type="submit" value="Submit">
         </form>
     </div>

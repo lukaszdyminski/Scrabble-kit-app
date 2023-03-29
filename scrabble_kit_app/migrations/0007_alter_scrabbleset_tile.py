@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='scrabbleset',
-            name='tile',
+            name='user_tile',
             field=models.CharField(max_length=1, validators=[django.core.validators.RegexValidator('^[a-zA-Z-]*$', 'Only letters and special character "-" are allowed.')]),
         ),
     ]

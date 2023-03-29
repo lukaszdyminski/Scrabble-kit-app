@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
             name='ScrabbleSet',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tile', models.CharField(max_length=10)),
+                ('user_tile', models.CharField(max_length=10)),
                 ('tile_id', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='scrabble_kit_app.scrabblewordlength')),
             ],
         ),

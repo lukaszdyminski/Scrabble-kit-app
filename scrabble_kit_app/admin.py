@@ -14,6 +14,11 @@ class ScrabbleWordLength(admin.ModelAdmin):
     pass
 
 
-@admin.register(ScrabbleSet)
-class ScrabbleSet(admin.ModelAdmin):
+@admin.register(UserScrabbleSet)
+class UserScrabbleSet(admin.ModelAdmin):
+    pass
+
+
+@admin.register(BoardScrabbleSet)
+class BoardScrabbleSet(admin.ModelAdmin):
     pass

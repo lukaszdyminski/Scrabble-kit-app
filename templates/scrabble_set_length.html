@@ -21,26 +21,57 @@
     <div class="container">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ formset.management_form }}
-                {% for dict in formset.errors %}
+            {{ user_formset.management_form }}
+                {% for dict in user_formset.errors %}
                     {% for error in dict.values %}
                         <div class="container p-3 my-2 bg-warning rounded">
-                            <strong>{{ error|escape }}</strong>
+                            <strong>{{ error }}</strong>
                         </div>
                     {% endfor %}
                 {% endfor %}
-                    {% if formset.non_form_errors %}
+                    {% if user_formset.non_form_errors %}
                         <div class="container p-3 my-2 bg-warning rounded">
-                            <strong>{{ formset.non_form_errors }}</strong>
+                            <strong>{{ user_formset.non_form_errors }}</strong>
                         </div>
                     {% endif %}
                 <br>
 
-                {% for form in formset %}
-                    <label>Enter the {{ forloop.counter }}. letter:</label>
-                    {{ form.tile }}<br><br>
+                <div class="container text-danger">
+                    <h6>From your scrabble set:</h6>
+                </div>
+                <br>
+
+                {% for user_form in user_formset %}
+                    <label>Enter the {{ forloop.counter }}. letter of your scrabble set:</label>
+                    {{ user_form.user_tile }}<br><br>
                 {% endfor %}
-                <input class="h3 btn btn-dark" type="submit" value="Submit">
+                <br>
+
+            {{ board_formset.management_form }}
+                {% for dict in board_formset.errors %}
+                    {% for error in dict.values %}
+                        <div class="container p-3 my-2 bg-warning rounded">
+                            <strong>{{ error }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                    {% if board_formset.non_form_errors %}
+                        <div class="container p-3 my-2 bg-warning rounded">
+                            <strong>{{ board_formset.non_form_errors }}</strong>
+                        </div>
+                    {% endif %}
+                <br>
+
+                <div class="container text-danger">
+                    <h6>From the board:</h6>
+                </div>
+                <br>
+
+                {% for board_form in board_formset %}
+                    <label>Enter the {{ forloop.counter }}. letter of the board tiles:</label>
+                    {{ board_form.board_tile }}<br><br>
+                {% endfor %}
+            <input class="h3 btn btn-dark" type="submit" value="Submit">
         </form>
     </div><br>
 

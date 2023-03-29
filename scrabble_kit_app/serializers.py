@@ -20,4 +20,4 @@ class ScrabbleSetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ScrabbleSet
-        fields = ['tile', 'tile_id']
+        fields = ['user_tile', 'tile_id']

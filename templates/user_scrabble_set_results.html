@@ -5,19 +5,19 @@
 {% block content %}
 
     <div class="container p-4 my-4 bg-dark text-white rounded">
-        Your scrabble set is:
+        The scrabble tiles you want to check out are:
     </div>
 
     <div class="container">
         <h2>
-            {% for result in user_scrabble_set %}
-                <span class="badge bg-warning">{{ result.tile }}</span>
+            {% for result in tiles_set %}
+                <span class="badge bg-warning">{{ result }}</span>
             {% endfor %}
         </h2>
     </div>
 
     <div class="container p-4 my-4 bg-dark text-white rounded">
-        The full scrabble set currently looks like below (the red tiles are the ones you have chosen):
+        The full scrabble set currently looks like below (the red tiles are the ones from your scrabble set):
     </div>
 
     <div class="container">

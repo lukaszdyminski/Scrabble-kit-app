@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='scrabbleset',
-            name='tile',
+            name='user_tile',
             field=models.CharField(max_length=1),
         ),
     ]
