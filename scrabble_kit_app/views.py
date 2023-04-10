@@ -6,14 +6,13 @@ import itertools
 import os
 
 
-# Create your views here.
-
-
+# original scrabble set view; presenting 27 pairs "letter - letter tiles amount"; displayed on scrabble-kit-app home url
 def display_tiles_set(request):
     letters_dict = ScrabbleTiles.objects.all()
     return render(request, 'index.html', {'letters_dict': letters_dict})
 
 
+# tiles amount view; presenting form in which user enters number of tiles that are kept in secret and from the board
 def enter_letters_amount(request):
     if request.method == 'POST':
         letters_amount = ScrabbleWordLengthForm(request.POST or None)
@@ -28,6 +27,7 @@ def enter_letters_amount(request):
     return render(request, 'letters_amount.html', {'letters_amount': letters_amount})
 
 
+# tiles view; presenting form in which user enters the tiles that are kept in secret and from the board
 def enter_user_scrabble_set(request, pk):
     scrabble_set_length = get_object_or_404(ScrabbleWordLength, pk=pk)
     user_field_value = getattr(scrabble_set_length, 'user_word_length')
@@ -54,6 +54,7 @@ def enter_user_scrabble_set(request, pk):
                                                         })
 
 
+# user tiles set and modified original scrabble set view; presenting tiles chosen by user and scrabble set minus user's tiles kept in secret
 def display_user_scrabble_set(request, pk):
     set_length = get_object_or_404(ScrabbleWordLength, pk=pk)
     user_scrabble_tiles = UserScrabbleSet.objects.filter(user_tile_id=pk).values_list('user_tile', flat=True)
@@ -76,6 +77,7 @@ def display_user_scrabble_set(request, pk):
                                                               })
 
 
+# searching results view; presenting all the words arranged of user tiles set ordering from longest one to shortest one
 def display_words_list(request, pk):
     letters = []
     for i in range(65, 91):

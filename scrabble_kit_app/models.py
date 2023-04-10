@@ -4,8 +4,16 @@ from django.core.validators import MinValueValidator, MaxValueValidator, RegexVa
 from django.utils.translation import gettext_lazy
 
 
+'''original full scrabble set model; sending to database 27 pairs "letter: letter-tiles-amount"
+as the separate objects'''
+
+
 class ScrabbleTiles(models.Model):
     all_tiles_set = JSONField()
+
+
+'''user tiles amount model; sending to database number of tiles user needs to create a word, 
+both the ones kept secret and the ones from the board'''
 
 
 class ScrabbleWordLength(models.Model):
@@ -21,6 +29,8 @@ class ScrabbleWordLength(models.Model):
                                                                                   self.board_tiles)
 
 
+'''user tiles kept secret model; sending to database user tiles in the given amount'''
+
 validate_user_tile = RegexValidator(r'^[a-zA-Z-]*$', 'Only letters and special character "-" are allowed.')
 
 
@@ -29,6 +39,8 @@ class UserScrabbleSet(models.Model):
     user_tile_id = models.ForeignKey(ScrabbleWordLength, on_delete=models.CASCADE, null=True,
                                      related_name='user_tile_rel')
 
+
+'''board tiles model; sending to database tiles from the game board in the given amount'''
 
 validate_board_tile = RegexValidator(r'^[a-zA-Z]*$', 'Only letters are allowed.')
 
